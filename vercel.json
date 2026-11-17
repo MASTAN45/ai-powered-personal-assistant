@@ -1,19 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "backend/api/serverless.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/api/serverless.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "backend/api/serverless.js"
-    }
-  ]
+    "functions":  {
+                      "backend/api/**/*.js":  {
+                                                  "maxDuration":  10
+                                              }
+                  },
+    "buildCommand":  "",
+    "version":  2,
+    "installCommand":  "cd backend \u0026\u0026 npm install \u0026\u0026 npm run build"
 }
