@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Vercel Serverless Entry Point
  * 
  * This file is the entry point for Vercel serverless deployment.
@@ -11,7 +11,6 @@
  * - Safe concurrent initialization handling
  */
 
-import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { logger } from './config/logger';
@@ -77,15 +76,16 @@ const initialize = async (): Promise<void> => {
 /**
  * Vercel Serverless Handler
  * 
- * This is the main entry point invoked by Vercel for each request.
- * It ensures initialization happens before processing requests.
+ * This wraps the Express app and handles initialization before each request.
+ * Vercel expects a default export function that handles (req, res).
  */
-export default async (req: Request, res: Response) => {
+export default async (req: any, res: any) => {
   try {
     // Ensure initialization before handling request
     await initialize();
 
-    // Pass request to Express app
+    // Express app is actually a request handler, so we can call it directly
+    // This works because Express Application extends RequestHandler
     return app(req, res);
   } catch (error) {
     logger.error('[Serverless] Request handling failed:', error);
@@ -101,5 +101,5 @@ export default async (req: Request, res: Response) => {
   }
 };
 
-// Export the Express app for potential local testing
+// Export the Express app for testing
 export { app };
