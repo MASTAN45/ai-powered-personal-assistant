@@ -1,4 +1,4 @@
-import winston from 'winston';
+﻿import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import path from 'path';
 
@@ -21,6 +21,7 @@ const sanitizeFormat = winston.format(info => sanitizeData(info));
 
 const createLogger = () => {
   const isDevelopment = process.env.NODE_ENV !== 'production';
+  const isVercelServerless = process.env.VERCEL === '1';
   const logLevel = process.env.LOG_LEVEL || (isDevelopment ? 'debug' : 'info');
 
   const logFormat = winston.format.combine(
@@ -44,7 +45,9 @@ const createLogger = () => {
     })
   ];
 
-  if (!isDevelopment) {
+  // Only use file transports in local development
+  // Vercel filesystem is read-only - console logs are captured by Vercel
+  if (isDevelopment && !isVercelServerless) {
     const logsDir = process.env.LOG_FILE ? path.dirname(process.env.LOG_FILE) : path.join(process.cwd(), 'logs');
     transports.push(
       new DailyRotateFile({
