@@ -236,7 +236,7 @@ export class ChatController {
       }
 
       // Revalidate authorization
-      if (userRole !== 'assistant') {
+      if (userRole !== 'ASSISTANT') {
         return res.status(403).json({ error: 'Only assistants can execute write operations' });
       }
 
