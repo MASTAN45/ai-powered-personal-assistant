@@ -1,8 +1,7 @@
 ﻿import mongoose from 'mongoose';
 import { logger } from './logger';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 
-let mongoServer: MongoMemoryServer | null = null;
+let mongoServer: any = null;
 
 const sleep = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -52,12 +51,15 @@ export const connectDatabase = async (): Promise<void> => {
   if (mongoUri.includes('localhost') || mongoUri.includes('127.0.0.1')) {
     logger.info('Development mode: Starting in-memory MongoDB...');
     try {
+      // Dynamic import for mongodb-memory-server (dev dependency only)
+      const { MongoMemoryServer } = await import('mongodb-memory-server');
       mongoServer = await MongoMemoryServer.create();
       mongoUri = mongoServer.getUri();
       logger.info('In-memory MongoDB started');
     } catch (error) {
       logger.error('Failed to start in-memory MongoDB:', error);
-      throw error;
+      logger.warn('mongodb-memory-server not available, using provided URI');
+      // Continue with the provided URI instead of throwing
     }
   }
 
