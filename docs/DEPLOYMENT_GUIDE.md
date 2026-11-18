@@ -75,16 +75,7 @@ vercel --prod
 3. Settings → Environment Variables
 4. Add these variables:
 
-```
-NODE_ENV=production
-PORT=3000
-MONGODB_URI=mongodb+srv://shaikmastanvali7670_db_user:gmbXjwsVNMx2BFke@emailassistantcluster.se7zj2o.mongodb.net/email_assistant?retryWrites=true&w=majority
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production-32chars-minimum
-FRONTEND_URL=https://your-frontend-url.vercel.app
-GEMINI_API_KEY=AIzaSyBCgB01rveMNPZjnv2PqOFCmfhBqfC2_pI
-GEMINI_MODEL=gemini-pro
-AI_MODE=demo
-```
+
 
 5. Redeploy: `vercel --prod` again
 
